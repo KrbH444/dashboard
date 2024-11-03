@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta Boss="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Employees</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="dashboard" id="dashboard">
+      <h2 class="fas">Dashboard</h2><br><br>
+      <ul>
+        <li><a href="#" class="fas"><i class="fas fa-home"></i>&nbsp;&nbsp;Home</a></li>
+        <li><a href="#" class="fas"><i class="fas fa-users"></i>&nbsp;&nbsp;Employees</a></li>
+        <li><a href="dashboard/dashboard.html" class="fas"><i class="fas fa-chart-bar"></i>&nbsp;&nbsp;Dashboard</a></li>
+        <li><a href="#" class="fas"><i class="fas fa-cog"></i>&nbsp;&nbsp;Settings</a></li>
+      </ul>
+    </div>
+    <div class="main-content" id="main-content">
+      <main class="table" id="table">
+        <div class="header">
+          <img src="images/dashboard-icon.png">
+          <h1 class="fas">Employees</h1>
+        </div>
+        <section class="table__header">
+          <h1 class="fas">List of Employees</h1>
+          <div class="input-group">
+            <input type="search" class="input-group-input" id="search-input" placeholder="Search Data...">
+            <img src="images/search.png">
+          </div>
+          <p class="fas fa-users total" id="total-employees">&nbsp; Total Employees: &nbsp;<span class="fas"
+              id="total"></span></p>
+          <div class="export__file">
+            <label for="export-file" class="export__file-btn" title="Export File"></label>
+            <input type="checkbox" id="export-file">
+            <div class="export__file-options">
+              <label>Export As &nbsp; &#10140;</label>
+              <label for="export-file" id="toPDF">PDF <img src="images/pdf.svg"></label>
+              <label for="export-file" id="toJSON">JSON <img src="images/json.svg"></label>
+              <label for="export-file" id="toCSV">CSV <img src="images/csv.svg"></label>
+              <!--<label for="export-file" id="toEXCEL">EXCEL <img src="images/excel.png" alt=""></label>-->
+            </div>
+          </div>
+        </section>
+        <section class="table__body">
+          <table id="employeeTable">
+            <thead>
+              <tr>
+                <th><strong> Emp#ID </strong> </th>
+                <th><strong> Full Name </strong> </th>
+                <th><strong> Position </strong></th>
+                <th><strong> Manager's Name </strong></th>
+                <th><strong> Department </strong></th>
+                <th><strong> Email </strong> </th>
+                <th><strong> Phone Number </strong></th>
+                <th class="hidden-column"> Gender </th>
+                <th class="hidden-column"> SUPNames </th>
+              </tr>
+            </thead>
+            <tbody id="table-body">
+
+              <tr class="superior-row" data-index="-1" data-has-subordinates="true">
+                <td>8</td>
+                <td><img src="images/male.jpg" class="table">Ethan Johnson</td>
+                <td>Manager</td>
+                <td class="status manager"> Boss </td>
+                <td>Operations</td>
+                <td><a class="plain-link status email"
+                    href="mailto:ethan.johnson@example.com">ethan.johnson@example.com</a></td>
+                <td><strong>987-654-3210</strong></td>
+                <td class="hidden-column"> Male </td>
+                <td class="hidden-column superior-names"></td> 
+              </tr>
+              <tr class="subordinate-row hidden table__body" data-parent-index="-1">
+                <td colspan="8">
+                  <table>
+                    <tbody>
+                      <tr class="superior-row" data-index="-1,-1" data-has-subordinates="true">
+                        <td>7</td>
+                        <td><img src="images/male.jpg" class="table">Alexander Smith</td>
+                        <td>Supervisor</td>
+                        <td class="status manager"> Boss </td>
+                        <td>Operations</td>
+                        <td><a class="plain-link status email"
+                            href="mailto:alexander.smith@example.com">alexander.smith@example.com</a></td>
+                        <td><strong>789-123-4560</strong></td>
+                        <td class="hidden-column"> Male </td>
+                        <td class="hidden-column superior-names"></td> 
+                      </tr>
+                      <tr class="subordinate-row hidden table__body" data-parent-index="-1,-1">
+                        <td colspan="8">
+                          <table>
+                            <tbody>
+                              <tr class="superior-row" data-index="-1,-1,-1" data-has-subordinates="false">
+                                <td>14</td>
+                                <td><img src="images/female.jpg" class="table">Olivia Davis</td>
+                                <td>Technician</td>
+                                <td class="status manager"> Boss </td>
+                                <td>Operations</td>
+                                <td><a class="plain-link status email"
+                                    href="mailto:olivia.davis@example.com">olivia.davis@example.com</a></td>
+                                <td><strong>102-938-4756</strong></td>
+                                <td class="hidden-column"> Female </td>
+                                <td class="hidden-column superior-names"></td> 
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+
+              <tr class="superior-row" data-index="0" data-has-subordinates="true">
+                <td>9</td>
+                <td><img src="images/female.jpg" class="table">Emily Anderson</td>
+                <td>Project Manager</td>
+                <td class="status manager"> Boss </td>
+                <td>Engineering</td>
+                <td><a class="plain-link status email"
+                    href="mailto:emily.anderson@example.com">emily.anderson@example.com</a></td>
+                <td><strong>123-456-7890</strong></td>
+                <td class="hidden-column"> Female </td>
+                <td class="hidden-column superior-names"></td> 
+              </tr>
+              <tr class="subordinate-row hidden table__body" data-parent-index="0">
+                <td colspan="8">
+                  <table>
+                    <tbody>
+                      <tr class="superior-row" data-index="0,-1" data-has-subordinates="true">
+                        <td>15</td>
+                        <td><img src="images/male.jpg" class="table">Matthew Turner</td>
+                        <td>Engineer</td>
+                        <td class="status manager"> Boss </td>
+                        <td>Engineering</td>
+                        <td><a class="plain-link status email"
+                            href="mailto:matthew.turner@example.com">matthew.turner@example.com</a></td>
+                        <td><strong>364-857-9201</strong></td>
+                        <td class="hidden-column"> Male </td>
+                        <td class="hidden-column superior-names"></td> 
+                      </tr>
+                      <tr class="subordinate-row hidden table__body" data-parent-index="0,-1">
+                        <td colspan="8">
+                          <table>
+                            <tbody>
+                              <tr class="superior-row" data-index="0,-1,-1" data-has-subordinates="false">
+                                <td>18</td>
+                                <td><img src="images/male.jpg" class="table">Youssef Mohamed</td>
+                                <td>Assistant</td>
+                                <td class="status manager"> Boss </td>
+                                <td>Engineering</td>
+                                <td><a class="plain-link status email"
+                                    href="mailto:youssef.mohamed@example.com">youssef.mohamed@example.com</a></td>
+                                <td><strong>234-141-1431</strong></td>
+                                <td class="hidden-column"> Male </td>
+                                <td class="hidden-column superior-names"></td> 
+                              </tr>
+                            </tbody>
+                          </table>
+                        </td>
+                      </tr>
+                      <tr class="superior-row" data-index="0,0" data-has-subordinates="false">
+                        <td>17</td>
+                        <td><img src="images/male.jpg" class="table">Jafaar Ahmed</td>
+                        <td>Engineer Assistant</td>
+                        <td class="status manager"> Boss </td>
+                        <td>Engineering</td>
+                        <td><a class="plain-link status email"
+                            href="mailto:jafaar.ahmed@example.com">jafaar.ahmed@example.com</a></td>
+                        <td><strong>252-134-5328</strong></td>
+                        <td class="hidden-column"> Male </td>
+                        <td class="hidden-column superior-names"></td>  
+                      </tr>
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+
+              <tr class="superior-row" data-index="1" data-has-subordinates="false">
+                <td>10</td>
+                <td><img src="images/female.jpg" class="table">Samantha Harris</td>
+                <td>Manager</td>
+                <td class="status manager"> Boss </td>
+                <td>Sale</td>
+                <td><a class="plain-link status email"
+                    href="mailto:samantha.harris@example.com">samantha.harris@example.com</a></td>
+                <td><strong>482-936-7014</strong></td>
+                <td class="hidden-column"> Female </td>
+                <td class="hidden-column superior-names"></td>   
+              </tr>
+              <tbody>
+            </tbody>
+
+            <tr class="superior-row" data-index="2" data-has-subordinates="true">
+              <td>13</td>
+              <td><img src="images/male.jpg" class="table">John Smith</td>
+              <td>Manager</td>
+              <td class="status manager"> Boss </td>
+              <td>IT</td>
+              <td><a class="plain-link status email" href="mailto:john.smith@example.com">john.smith@example.com</a>
+              </td>
+              <td><strong>123-456-7890</strong></td>
+              <td class="hidden-column"> Male </td>
+              <td class="hidden-column superior-names"></td>   
+            </tr>
+            <tr class="subordinate-row hidden table__body" data-parent-index="2">
+              <td colspan="8">
+                <table>
+                  <tbody>
+                    <tr class="superior-row" data-index="2,-1" data-has-subordinates="true">
+                      <td>12</td>
+                      <td><img src="images/female.jpg" class="table">Sarah Johnson</td>
+                      <td>Analyst</td>
+                      <td class="status manager"> Boss </td>
+                      <td>IT</td>
+                      <td><a class="plain-link status email"
+                          href="mailto:sarah.johnson@example.com">sarah.johnson@example.com</a></td>
+                      <td><strong>987-654-3210</strong></td>
+                      <td class="hidden-column"> Female </td>
+                      <td class="hidden-column superior-names"></td> 
+                    </tr>
+                    <tr class="subordinate-row hidden table__body" data-parent-index="2,-1">
+                      <td colspan="8">
+                        <table>
+                          <tbody>
+                            <tr class="superior-row" data-index="2,-1,-1" data-has-subordinates="true">
+                              <td>11</td>
+                              <td><img src="images/male.jpg" class="table">Daniel Wilson</td>
+                              <td>Developer</td>
+                              <td class="status manager"> Boss </td>
+                              <td>IT</td>
+                              <td><a class="plain-link status email"
+                                  href="mailto:daniel.wilson@example.com">daniel.wilson@example.com</a></td>
+                              <td><strong>627-495-1830</strong></td>
+                              <td class="hidden-column"> Male </td>
+                              <td class="hidden-column superior-names"></td> 
+                            </tr>
+                            <tr class="subordinate-row hidden table__body" data-parent-index="2,-1,-1">
+                              <td colspan="8">
+                                <table>
+                                  <tbody>
+                                    <tr class="superior-row" data-index="2,-1,-1,-1" data-has-subordinates="false">
+                                      <td>16</td>
+                                      <td><img src="images/female.jpg" class="table">Jessica Miller</td>
+                                      <td>Software Developer</td>
+                                      <td class="status manager"> Boss </td>
+                                      <td>IT</td>
+                                      <td><a class="plain-link status email"
+                                          href="mailto:jessica.miller@example.com">jessica.miller@example.com</a></td>
+                                      <td><strong>987-654-3210</strong></td>
+                                      <td class="hidden-column"> Female </td>
+                                      <td class="hidden-column superior-names"></td> 
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </section>
+      </main>
+    </div>
+  </div>
+  <div class="footer">
+    <p>&copy; 2024 Kawarism. All rights reserved.</p>
+  </div>
+  <script src="script.js"></script>
+</body>
+
+</html>

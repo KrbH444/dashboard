@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Employee Information</title>
+    <style>
+        html,
+        body {
+            background: #F5F7FF;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        /* Dropdown Button */
+        .dropbtn {
+            background-color: #04AA6D;
+            color: white;
+            padding: 16px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0px 5px 21px -2px #CDD1E1;
+            border-radius: 10px;
+            transition: background-color 0.2s ease-in-out, width 0.2s ease-in-out;
+        }
+
+        /* Dropdown button on hover & focus */
+        .dropbtn:hover,
+        .dropbtn:focus {
+            background-color: #3e8e41;
+
+        }
+
+
+        /* The search field */
+        #myInput {
+            box-sizing: border-box;
+            background-POSition: 14px 12px;
+            background-repeat: no-repeat;
+            font-size: 16px;
+            padding: 14px 20px 12px 45px;
+            border: none;
+            border-bottom: 1px solid #ddd;
+        }
+
+        /* The search field when it gets focus/clicked on */
+        #myInput:focus {
+            outline: 3px solid #ddd;
+        }
+
+        /* The container <div> - needed to POSition the dropdown content */
+        .dropdown {
+            POSition: relative;
+            display: flex;
+
+            justify-content: center;
+        }
+
+        /* Dropdown Content (Hidden by Default) */
+        .dropdown-content {
+            margin-top: 50px;
+            display: none;
+            POSition: absolute;
+            background-color: #f6f6f6;
+            min-width: 230px;
+            border: 1px solid #ddd;
+            z-index: 1;
+        }
+
+        /* Links inside the dropdown */
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        /* Change color of dropdown links on hover */
+        .dropdown-content a:hover {
+            background-color: #f1f1f1
+        }
+
+        /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+        .show {
+            display: block;
+        }
+
+        #pdfContainer {
+            width: 60%;
+            box-shadow: 0px 5px 21px 5px #CDD1E1;
+            margin: 0 auto;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1 style="text-align: center;">Employee Information</h1>
+
+    <div class="dropdown">
+        <button onclick="myFunction()" class="dropbtn">Employee ID</button>
+        <div id="myDropdown" class="dropdown-content">
+            <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
+            <div id="employeeIDs"></div>
+        </div>
+    </div>
+
+
+    <div id="pdfContainer">
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"
+        integrity="sha384-NaWTHo/8YCBYJ59830LTz/P4aQZK1sS0SneOgAvhsIl3zBu8r9RevNg5lHCHAuQ/"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.5.6/dist/jspdf.plugin.autotable.min.js"></script>
+
+    <script>
+
+        const tableData = [
+            {
+                "EName": "Adinolfi Wilson K",
+                "EmpID": "1988299991",
+                "DEP": "Software Engineering",
+                "POS": "Software Engineer I",
+                "DOH": "7/5/2011",
+                "DOT": "",
+                "PSCR": "4",
+                "SAT": "4",
+                "ARate": "86.87392894",
+                "MName": "Peter Monroe",
+                "MID": "7"
+            },
+            {
+                "EName": "Ait Sidi Karthikeyan",
+                "EmpID": "1105025718",
+                "DEP": "IT/IS",
+                "POS": "Sr. DBA",
+                "DOH": "3/30/2015",
+                "DOT": "6/16/2016",
+                "PSCR": "5",
+                "SAT": "5",
+                "ARate": "98.95362259",
+                "MName": "Simon Roup",
+                "MID": "4"
+            },
+            {
+                "EName": "Akinkuolie Sarah",
+                "EmpID": "1109029256",
+                "DEP": "Software Engineering",
+                "POS": "Software Engineer II",
+                "DOH": "7/5/2011",
+                "DOT": "9/24/2012",
+                "PSCR": "3",
+                "SAT": "4",
+                "ARate": "71.5146271",
+                "MName": "Michael Albert",
+                "MID": "22"
+            },
+            {
+                "EName": "Alagbe Trina",
+                "EmpID": "1012023013",
+                "DEP": "Software Engineering",
+                "POS": "Software Engineer I",
+                "DOH": "1/7/2008",
+                "DOT": "",
+                "PSCR": "2",
+                "SAT": "3",
+                "ARate": "73.89991423",
+                "MName": "Peter Monroe",
+                "MID": "7"
+            },
+            {
+                "EName": "Albert Michael",
+                "EmpID": "1006020066",
+                "DEP": "Production",
+                "POS": "Production Manager",
+                "DOH": "8/1/2011",
+                "DOT": "",
+                "PSCR": "5",
+                "SAT": "5",
+                "ARate": "76.21943719",
+                "MName": "Janet King",
+                "MID": "2"
+            },
+            {
+                "EName": "Anderson Carol",
+                "EmpID": "1001956578",
+                "DEP": "Software Engineering",
+                "POS": "Software Engineer I",
+                "DOH": "7/11/2011",
+                "DOT": "9/6/2011",
+                "PSCR": "2",
+                "SAT": "3",
+                "ARate": "71.47757841",
+                "MName": "Peter Monroe",
+                "MID": "7"
+            },
+            {
+                "EName": "Anderson Linda",
+                "EmpID": "906014183",
+                "DEP": "Software Engineering",
+                "POS": "Software EngineerI",
+                "DOH": "1/9/2012",
+                "DOT": "",
+                "PSCR": "Exceptional",
+                "SAT": "3",
+                "ARate": "83.65378985",
+                "MName": "Peter Monroe",
+                "MID": "7"
+            },
+            {
+                "EName": "Andreola Colby",
+                "EmpID": "1203032498",
+                "DEP": "Software Engineering",
+                "POS": "Software Engineer",
+                "DOH": "11/10/2014",
+                "DOT": "",
+                "PSCR": "5",
+                "SAT": "5",
+                "ARate": "99.42554663",
+                "MName": "Alex Sweetwater",
+                "MID": "10"
+            },
+            {
+                "EName": "Athwal Sam",
+                "EmpID": "1104025466",
+                "DEP": "Production",
+                "POS": "Production Technician I",
+                "DOH": "9/30/2013",
+                "DOT": "",
+                "PSCR": "1",
+                "SAT": "3",
+                "ARate": "76.6560916",
+                "MName": "Peter Monroe",
+                "MID": "7"
+            },
+            {
+                "EName": "Bachiochi Linda",
+                "EmpID": "1411071506",
+                "DEP": "Production",
+                "POS": "Production Technician I",
+                "DOH": "7/6/2009",
+                "DOT": "",
+                "PSCR": "5",
+                "SAT": "4",
+                "ARate": "82.06451791",
+                "MName": "Peter Monroe",
+                "MID": "7"
+            },
+            {
+                "EName": "Bacong Alejandro",
+                "EmpID": "1009919980",
+                "DEP": "IT/IS",
+                "POS": "Network Engineer",
+                "DOH": "1/5/2015",
+                "DOT": "",
+                "PSCR": "3",
+                "SAT": "5",
+                "ARate": "83.75600171",
+                "MName": "Brian Champaigne",
+                "MID": "13"
+            },
+            {
+                "EName": "Baczenski Rachael",
+                "EmpID": "1001495124",
+                "DEP": "Production",
+                "POS": "Production Technician I",
+                "DOH": "1/10/2011",
+                "DOT": "1/12/2011",
+                "PSCR": "1",
+                "SAT": "3",
+                "ARate": "70.38779299",
+                "MName": "Board of Directors",
+                "MID": "9"
+            },
+            {
+                "EName": "Barbara Thomas",
+                "EmpID": "1501072311",
+                "DEP": "Production",
+                "POS": "Production Technician I",
+                "DOH": "4/2/2012",
+                "DOT": "9/19/2012",
+                "PSCR": "3",
+                "SAT": "3",
+                "ARate": "89.62189032",
+                "MName": "Janet King",
+                "MID": "2"
+            },
+            {
+                "EName": "Barone Francesco A",
+                "EmpID": "1303054580",
+                "DEP": "Production",
+                "POS": "Production Technician I",
+                "DOH": "2/20/2012",
+                "DOT": "",
+                "PSCR": "5",
+                "SAT": "3",
+                "ARate": "93.65585857",
+                "MName": "Janet King",
+                "MID": "2"
+            },
+            {
+                "EName": "Barton Nader",
+                "EmpID": "1110029990",
+                "DEP": "Production",
+                "POS": "Production Technician I",
+                "DOH": "9/24/2012",
+                "DOT": "4/6/2013",
+                "PSCR": "5",
+                "SAT": "3",
+                "ARate": "95.53543197",
+                "MName": "Janet King",
+                "MID": "2"
+            },
+            {
+                "EName": "Beak Kimberly",
+                "EmpID": "1103024335",
+                "DEP": "Production",
+                "POS": "Production Technician II",
+                "DOH": "7/21/2016",
+                "DOT": "",
+                "PSCR": "4",
+                "SAT": "3",
+                "ARate": "71.07743615",
+                "MName": "Michael Albert",
+                "MID": "22"
+            },
+            {
+                "EName": "Beatrice Courtney",
+                "EmpID": "1409070147",
+                "DEP": "Production",
+                "POS": "Production Technician I",
+                "DOH": "4/4/2011",
+                "DOT": "",
+                "PSCR": "5",
+                "SAT": "4",
+                "ARate": "90.62125829",
+                "MName": "Janet King",
+                "MID": "2"
+            },
+            {
+                "EName": "Becker Renee",
+                "EmpID": "1411071481",
+                "DEP": "IT/IS",
+                "POS": "Database Administrator",
+                "DOH": "7/7/2014",
+                "DOT": "9/12/2015",
+                "PSCR": "5",
+                "SAT": "3",
+                "ARate": "90.29946835",
+                "MName": "John Smith",
+                "MID": "17"
+            },
+            {
+                "EName": "Becker Scott",
+                "EmpID": "1307060077",
+                "DEP": "Production",
+                "POS": "Production Technician I",
+                "DOH": "7/8/2013",
+                "DOT": "",
+                "PSCR": "5",
+                "SAT": "3",
+                "ARate": "73.96470614",
+                "MName": "Janet King",
+                "MID": "2"
+            },
+            {
+                "EName": "Bernstein Sean",
+                "EmpID": "1001944783",
+                "DEP": "Production",
+                "POS": "Production Technician I",
+                "DOH": "4/2/2012",
+                "DOT": "",
+                "PSCR": "5",
+                "SAT": "4",
+                "ARate": "96.79469379",
+                "MName": "Janet King",
+                "MID": "2"
+            },
+            {
+                "EName": "Biden Lowan M",
+                "EmpID": "1403065874",
+                "DEP": "Production",
+                "POS": "Production Technician I",
+                "DOH": "8/19/2013",
+                "DOT": "",
+                "PSCR": "5",
+                "SAT": "2",
+                "ARate": "79.87471644",
+                "MName": "John Smith",
+                "MID": "2"
+            },
+            {
+                "EName": "Billis Helen",
+                "EmpID": "1103024679",
+                "DEP": "Production",
+                "POS": "Production Technician I",
+                "DOH": "7/7/2014",
+                "DOT": "",
+                "PSCR": "4",
+                "SAT": "3",
+                "ARate": "87.5436206",
+                "MName": "John Smith",
+                "MID": "2"
+            },
+            {
+                "EName": "Blount Dianna",
+                "EmpID": "1208048229",
+                "DEP": "Production",
+                "POS": "Production Technician II",
+                "DOH": "4/4/2011",
+                "DOT": "",
+                "PSCR": "1",
+                "SAT": "5",
+                "ARate": "81.93057225",
+                "MName": "Michael Albert",
+                "MID": "22"
+            },
+            {
+                "EName": "Bondwell Betsy",
+                "EmpID": "1308060535",
+                "DEP": "Production",
+                "POS": "Production Technician II",
+                "DOH": "1/10/2011",
+                "DOT": "4/4/2014",
+                "PSCR": "3",
+                "SAT": "5",
+                "ARate": "81.76664699",
+                "MName": "Michael Albert",
+                "MID": "22"
+            },
+            {
+                "EName": "Boutwell Bonalyn",
+                "EmpID": "1408069481",
+                "DEP": "Admin Offices",
+                "POS": "Sr. Accountant",
+                "DOH": "2/16/2015",
+                "DOT": "",
+                "PSCR": "3",
+                "SAT": "1",
+                "ARate": "98.07313341",
+                "MName": "John Smith",
+                "MID": "17"
+            },
+            {
+                "EName": "Bozzi Charles",
+                "EmpID": "1009021646",
+                "DEP": "Production",
+                "POS": "Production Manager",
+                "DOH": "9/30/2013",
+                "DOT": "8/7/2014",
+                "PSCR": "5",
+                "SAT": "4",
+                "ARate": "80.67360091",
+                "MName": "John Smith",
+                "MID": "2"
+            },
+            {
+                "EName": "Bramante Elisa",
+                "EmpID": "1110029732",
+                "DEP": "Production",
+                "POS": "Director of Operations",
+                "DOH": "1/5/2009",
+                "DOT": "",
+                "PSCR": "4",
+                "SAT": "3",
+                "ARate": "73.30646845",
+                "MName": "Simon Roup",
+                "MID": "4"
+            },
+            {
+                "EName": "Brill Donna",
+                "EmpID": "1107027351",
+                "DEP": "Production",
+                "POS": "Production Technician I",
+                "DOH": "4/2/2012",
+                "DOT": "6/15/2013",
+                "PSCR": "5",
+                "SAT": "3",
+                "ARate": "84.22591325",
+                "MName": "Simon Roup",
+                "MID": "2"
+            },
+            {
+                "EName": "Brown Mia",
+                "EmpID": "1103024456",
+                "DEP": "Admin Offices",
+                "POS": "Accountant I",
+                "DOH": "10/27/2008",
+                "DOT": "",
+                "PSCR": "5",
+                "SAT": "2",
+                "ARate": "75.03836764",
+                "MName": "Brandon R. LeBlanc",
+                "MID": "1"
+            },
+            {
+                "EName": "Buccheri Joseph",
+                "EmpID": "1201031310",
+                "DEP": "Production",
+                "POS": "Production Technician II",
+                "DOH": "9/29/2014",
+                "DOT": "",
+                "PSCR": "5",
+                "SAT": "5",
+                "ARate": "70.80893227",
+                "MName": "Michael Albert",
+                "MID": "22"
+            },
+            {
+                "EName": "Buck Edward",
+                "EmpID": "1411071406",
+                "DEP": "Sales",
+                "POS": "Area Sales Manager",
+                "DOH": "9/29/2014",
+                "DOT": "",
+                "PSCR": "5",
+                "SAT": "5",
+                "ARate": "95.9173983",
+                "MName": "Ketsia Liebig",
+                "MID": "19"
+            },
+            {
+                "EName": "Bugali Josephine",
+                "EmpID": "1402065355",
+                "DEP": "Sales",
+                "POS": "Area Sales Manager",
+                "DOH": "11/11/2013",
+                "DOT": "",
+                "PSCR": "5",
+                "SAT": "5",
+                "ARate": "74.08257846",
+                "MName": "Alex Sweetwater",
+                "MID": "2"
+            },
+            {
+                "EName": "Bunbury Jessica",
+                "EmpID": "1011022818",
+                "DEP": "Sales",
+                "POS": "Area Sales Manager",
+                "DOH": "8/15/2011",
+                "DOT": "8/2/2014",
+                "PSCR": "5",
+                "SAT": "5",
+                "ARate": "93.17672859",
+                "MName": "Ketsia Liebig",
+                "MID": "19"
+            },
+            {
+                "EName": "Burke Joelle",
+                "EmpID": "1106026474",
+                "DEP": "Production",
+                "POS": "Production Technician II",
+                "DOH": "3/5/2012",
+                "DOT": "",
+                "PSCR": "5",
+                "SAT": "3",
+                "ARate": "84.72520578",
+                "MName": "Michael Albert",
+                "MID": "22"
+            },
+            {
+                "EName": "Burkett Benjamin",
+                "EmpID": "1001417624",
+                "DEP": "Production",
+                "POS": "Production Technician II",
+                "DOH": "4/4/2011",
+                "DOT": "",
+                "PSCR": "5",
+                "SAT": "4",
+                "ARate": "88.70922939",
+                "MName": "Webster Butler",
+                "MID": "39"
+            },
+            {
+                "EName": "Butler Webster L",
+                "EmpID": "1192991000",
+                "DEP": "Production",
+                "POS": "Production Manager",
+                "DOH": "1/28/2016",
+                "DOT": "",
+                "PSCR": "4",
+                "SAT": "5",
+                "ARate": "88.29974777",
+                "MName": "Simon Roup",
+                "MID": "2"
+            },
+            {
+                "EName": "Campain Michael",
+                "EmpID": "1408071958",
+                "DEP": "IT/IS",
+                "POS": "BI Developer",
+                "DOH": "5/13/2013",
+                "DOT": "",
+                "PSCR": "4",
+                "SAT": "3",
+                "ARate": "97.24189586",
+                "MName": "Brian Champaigne",
+                "MID": "13"
+            },
+            {
+                "EName": "CamPOS Jen",
+                "EmpID": "1412071660",
+                "DEP": "Production",
+                "POS": "Production Technician I",
+                "DOH": "9/22/2014",
+                "DOT": "",
+                "PSCR": "5",
+                "SAT": "3",
+                "ARate": "87.34819773",
+                "MName": "Janet King",
+                "MID": "2"
+            },
+            {
+                "EName": "Carabbio Judith",
+                "EmpID": "1201031307",
+                "DEP": "Admin Offices",
+                "POS": "Area Sales Manager",
+                "DOH": "1/14/2013",
+                "DOT": "",
+                "PSCR": "4",
+                "SAT": "2",
+                "ARate": "91.497292",
+                "MName": "Brandon R. LeBlanc",
+                "MID": "1"
+            },
+            {
+                "EName": "Carreiro Keith",
+                "EmpID": "1108028108",
+                "DEP": "Admin Offices",
+                "POS": "Senior Accountant",
+                "DOH": "3/30/2015",
+                "DOT": "",
+                "PSCR": "5",
+                "SAT": "2",
+                "ARate": "90.50252966",
+                "MName": "Brandon R. LeBlanc",
+                "MID": "1"
+            }
+        ];
+
+
+        function myFunction() {
+            document.getElementById("myDropdown").classList.toggle("show");
+        }
+
+        function filterFunction() {
+            var input, filter, div, a, i;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            div = document.getElementById("myDropdown");
+            a = div.getElementsByTagName("a");
+            for (i = 0; i < a.length; i++) {
+                txtValue = a[i].textContent || a[i].innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    a[i].style.display = "";
+                } else {
+                    a[i].style.display = "none";
+                }
+            }
+        }
+
+        function populateEmployeeIDs() {
+            const employeeIDsDiv = document.getElementById("employeeIDs");
+            const employeeIDs = tableData.map(employee => ({ id: employee["EmpID"], name: employee["EName"] }));
+
+            employeeIDsDiv.innerHTML = employeeIDs
+                .map(employee => `<a href="#" onclick="selectEmployeeID('${employee.id}')">${employee.name} (${employee.id})</a>`)
+                .join('');
+        }
+
+        function selectEmployeeID(selectedID) {
+            // Perform the employee search and display PDF
+            const employee = tableData.find(emp => emp["EmpID"] === selectedID);
+
+            if (employee) {
+                displayPDF(employee);
+            } else {
+                alert("Employee not found.");
+            }
+        }
+
+
+        function displayPDF(employee) {
+            const pdf = new jsPDF();
+
+            pdf.setFillColor(255, 255, 255); // Set border color
+            pdf.rect(0, 0, pdf.internal.pageSize.width, pdf.internal.pageSize.height, 'F');
+            pdf.setProperties({
+                title: "Empolyee Information"
+            });
+
+
+            const imgData2 = '/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsNFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAARCAGQARsDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD6g/Zk/Zk+D3iD9m/4Wapqnwr8GanqV74W0y5ury60G1lmnle1jZ3d2TLMWJJJOSTXpn/DJPwP/wCiP+BP/CctP/jdM/ZLfb+y38IP+xQ0n/0jir1bdVmVzyz/AIZK+B//AER7wJ/4Tlp/8bo/4ZL+B/8A0R7wJ/4Tlp/8br1PeaN3vQO55Z/wyX8D/wDoj3gT/wAJyz/+N0f8Ml/BD/oj3gT/AMJyz/8Ajdep+ZRuHrQFzyz/AIZL+B//AER7wJ/4Tln/APG6P+GSvgf/ANEe8Cf+E5af/G69T3mjd70Bc8s/4ZK+B/8A0R7wJ/4Tlp/8bo/4ZK+B/wD0R7wL/wCE5Z//ABuvU91G4UBc8s/4ZK+B/wD0R7wJ/wCE5af/ABuj/hkr4H/9Ee8Cf+E5af8AxuvU95o3UBc8s/4ZL+B//RHvAv8A4Tln/wDG6P8Ahkv4H/8ARHvAn/hOWf8A8br1PeaN5oC55Z/wyX8D/wDoj3gT/wAJyz/+N0f8Ml/A/wD6I94E/wDCctP/AI3Xqe6jdQFzyz/hkv4H/wDRHvAn/hOWn/xuj/hk34If9Ef8Cf8AhOWf/wAbr1PeaN5oJueW/wDDJfwP/wCiPeBf/Ccs/wD43Sf8Ml/A/wD6I94E/wDCctP/AI3Xqe6jdQFzyz/hkv4H/wDRHvAn/hOWn/xuj/hkv4H/APRHvAn/AITlp/8AG69S30u6gLnln/DJfwP/AOiP+BP/AAnLP/43R/wyX8D/APoj3gT/AMJyz/8Ajdep7+vNG6gq55Z/wyX8D/8Aoj3gT/wnLP8A+N0v/DJfwP8A+iPeBP8AwnLP/wCN16lvxRuoC55Z/wAMlfA//oj3gT/wnLT/AON0f8Ml/A//AKI94E/8Jyz/APjdep7zRvNAXPLP+GS/gf8A9Ee8Cf8AhOWf/wAbpf8Ahkn4Hf8ARHvAn/hOWn/xuvUt5o3mgLnln/DJfwP/AOiPeBP/AAnLT/43R/wyX8D/APoj3gT/AMJy0/8Ajdep7zRvNAXPLP8Ahkv4If8ARHvAn/hOWf8A8bo/4ZL+CH/RHvAn/hOWf/xuvU95o3UBc8s/4ZL+CHT/AIU94F/8Jyz/APjdfij/AMFCvCeh+B/2wviDonh3SLLQtGtWsRb6fpsMdtbxbrC3dtsaKFXLMzHA5JJ71/QDvNfgb/wU0/5Pg+Jf+/p//putaTCL1P2W/ZPb/jFz4Qj/AKlHSf8A0jir1Xd715J+yi//ABi/8Ih/1KWk/wDpJFXqm6rMrk/mUbveoN4o3igm5NvNL5lQbxRvFAXJ93vSbqh3UbxQFyfd70eZUG8UbxQFyfd70eZUG6jeKAuT+ZRu96g3ijeKAuT+ZR5lQbxRvFAXJ/Mo8yoN1G8UBcn3e9HmVBu/2qN4oC5P5lG73qDzKPMoC5NuHrS7veoN4o3igLk/mUeZUG/tRuPrQFyfzKN3vUG7/ao8ygLk+73pNw9ah3ijzKAuTs1HmVBvFG6gLk/mUeZUG8UbqAuTbzX4Jf8ABTL/AJPe+Jf+/p//AKbrWv3n3ivwX/4KXZ/4bc+JX+/p/wD6braky6Z+xv7KTf8AGMHwj/7FLSv/AEkir1TdXk37Krf8YxfCT/sUtK/9JIq9S8z86Zg3qT76N/vUG+jfQK5Pvo31Bvo3e9AXJ99G/wB6g3UeZQFyffRuqDd70b6AuT7qN9Qb6N9AXJ/Mo3elQb/ejfQFyffRvqDdRvoC5Puo8w1Buo30Bcn3UbzUG7NG+gLk++jfUG+jdQFyffRvqDdRvoC5Pvo3VBvo30Bcn3Ub6g30b6AuT76N9QbutG+gLk+40b6g3Ubu9AXJ99G+oN9G+gLk++vwd/4KVf8AJ7PxJ/39P/8ATdbV+7e6vwj/AOCkzf8AGa3xI/37D/0321JmtPc/YT9lZv8AjGP4S/8AYp6V/wCkkVeo7q8p/ZXb/jGX4Tf9inpf/pJFXqG6mc0nqybdRuqLeaTfQK5Nuo3VFuHrSeZQLmJt1G6ofMo8ygLk240bqh3+9LuoDmJd1G6ot5pN9AcxNuNG6od9G+gOYm3Ubqi3D1pN9AcxNuo3VFvNJvoC5Nuo3VFvNHmUBcl3GjdUO+jfQHMTbqN1Q76XzKAuS7qN1Q7qN9AcxNuo3VDvpd5oDmJd1G41FvNJvoDmJt3+1RuNQ76N9AXJt3+1RuqLeaN5oDmJd1fhT/wUiGf21PiR/v2H/pvtq/dDfX4Xf8FIOf20viP/AL9h/wCm+2pS2Oii9Wfr1+yy3/GM/wAJx/1Kul/+kkdeobzXlP7Lj4/Zp+FH/Yq6X/6Sx16f5lUjjk/eZP5lG81B5lG73qibk+80bzUG73o3dqAuT7zR5lV95pfMoC5PuNHmVB5lG73oC5PvNG81B5lHmUBcn3mjear+Z3o8ygLljeaN5qDzKPMoC5PvNHmVB5lHmUBcn3mjzKg8yjd70Bcn8yjzKg8yjzKAuT7qPMqvvNL5lAXJ95o3moPMpNw9aAuWPMo8yoPMo8ygLk/mUbzUHmUeZQFyfdRvNQbyaTzKAuWPMo3moN3vR5lAXJ95r8Mf+Cjv/J6HxG/37D/0321fuP5lfhx/wUY/5PM+In+9Yf8ApvtqzkdeHfvM/XL9l1/+Ma/hT/2K2l/+ksdenbxXlX7MDY/Zt+FX/YraZ/6Sx16dv/GrWxxSfvMn3UbxUG+k8ymRcsbxRuqDfSbxQFyxvFG6oN9J5lAXLG8UbxUHmUm8UBcsbj60bxUHmUm8UCuWPMo8yq/melG8UBcsbxRvFV94pd9A7k/md6N1V/Mo3igVyxvFG8VB5nWk8ygdyxvFHmdar7xRvFAXLG8Ubv8AaqDf70b/AEoC5Puo3VX3il30CuT7xRuqDfSbxQO5P5lHmVBvFLv96BXJ91G/tVfzKN4oHcn3e9LvFQCSjzKAuT+ZX4ef8FF/+Ty/iJ/vWH/pvtq/bzfX4hf8FEhn9sj4hn/bsf8A0gtqiWx2YV++/Q/Wn9mNv+Mb/hX/ANivpn/pLHXpnmV5b+zI+P2cfhb/ANivpn/pLHXpfmVcdjgm/fZP5lHmVB5lJup2M7ljfR5lQeZSeZSC5Y8yjzKg8yk8ygOYseZR5lV/Mo30BcseZR5lV99G+gLljzKPMqDzKN9AXJ99HmVX34o8ygOYseZ3o8yoPMo8ynYOYn8yjzKg30nmUg5ix5lHmVX8yjzKA5ix5lHmVBvpPMoDmLHmUeZVffR5lAcxY30eZVfzKXzKAuT+ZRvqvvo8ygLljzKN9V/Mo8ygLljzKPMqDzPek30Bcsb6/En/AIKHf8nifEL/AH7H/wBILev2v8yvxQ/4KFH/AIzC+IP+/Y/+kFvWctjuwj99+h+rv7M7/wDGOfwv/wCxY03/ANJY69J315f+zS3/ABjv8MB/1LGm/wDpLHXpPmVtHY86o/fZY8yk8yq/mUvme9Mz5ix5lG+q/mUb6A5ix5lHmVX30b6A5ix5lHmVX8z3o8ygOYn8yl8yq++jzKA5ifzKXzKr+ZRvoDmJ/Mo8yoPM96PMoDmLHmUeZVbzPel8z8qA5ix5lHmVX30eZQHMT+Z70vmVX8yjzKA5ixvo3iq/me9G+gOYseZR5lV/Mo8z3oDmJ/MpfMqv5lHmdKA5ix5lHmVX8yjfQHMT+ZS+ZVfzKTzKA5iz5lHmVX8wUeZ60BzFjfX4p/8ABQgk/tgfED/esf8A0gt6/aPzK/Fv/goJhv2vfH5/2rH/ANILeokelgXeb9P8j9Vf2a5Mfs7/AAxH/Us6b/6Sx16RvrzD9m9v+MefhkP+pa03/wBJY69H31cVoeXWl779Sx5maTzPeoPMo8ynYy5ixvHrR5lVvMpd9Fg5ixvo31X8zPek30WDmLPmUeZVfzKPMosHMT+ZS+ZVfzKTzPenqHMWd/ajzKr+ZR5lKwcxY8yjzKr+ZR5lPUOYseZRvqt5nvR5hpWDmLPmUb6r76PM96LBzFjzKPM/Cq2/3pd9Fg5ifzKXzKr+ZSeZRYOYseZml31W8yjzKLBzFnzKPMqv5lHmU9Q5ix5lHmVX8yjzKVg5ix5nvR5lVvMpfM96eocxY8yjzKr+ZR5lKwcxY8yvxh/4KAf8ndePv96x/wDSG3r9lfMr8aP2/Du/a38fH/asv/SG3qJnq5e/3j9D9S/2cW/4x8+Gf/Ytab/6TR16JvrzT9nOTH7P/wANOf8AmW9O/wDSaOvQ9/vVR2PHqy/eS9Sx5lG+q/mUb+aoz5ix5lHmfhVfzKN/vQLmLHmUeZVfzPejdQPmLHmUeZ71X8yl30BzE/mUvmVW8yjzKA5ix5lHmVB5nvSb6A5ix5lL5lVvM7Zo8ygOYs+ZSeZUHmUnmUBzFnfSeZVfd70eZQHMWPMo8yoPMpPMoDmLHmUeZ71X8zjril8z3oDmLHmUeZVbfS76A5ifzKPMqDzKTzKA5ix5nvS76r+Z74pN9AcxY8yjzPeoPM98UnmUBzFjzKPMqv5melHmUBzFnfX42/t8HP7Wnjw/7Vl/6Q29fsTv96/HT9vU5/ay8d/71l/6Q29ZVD1stleq/Q/T/wDZ0f8A4x/+Gw/6lvTv/SaOvRPMrzX9nZtvwD+G/wD2Lmn/APpNHXoXmVqtjxq0v3svVljzKN9V/MpPMqzLmLPmUb6r+ZR5lAcxY8yjzKr+ZR5lAcxP5lL5nvVfzKTeKA5iz5lHmVX8yjzKA5ix5lHmVX8yjzKA5ix5nvR5lV9/40eZQHMWPMo31X30eZQHMWPMo8yq/mUb6A5ix5lHmd6r+ZR5lAcxY8yjfVfzPejf3oDmLHmUeZiq/mUb6A5ixvpN4qDzKPMoDmLHmUeZVfzKTzKA5iz5lJ5lQeZR5lAcxY8zvR5lV/MpPMoDmLPmV+PX7d+T+1d46/3rL/0it6/X3zK/IP8AbqJ/4ar8df79n/6RQVjUPZyt3qy9P1R+mf7PL/8AFhfhwP8AqXLD/wBJo69A8z0Necfs+vj4D/Dnn/mXbD/0mjrv/MrWPwniVpfvZerLHmUbqr+ZR5lMw5izv96TzKr+Z0o8ygOYseZ70eZVfzKPMp2DmLHmUeYelV/Mo8yiwcxY8yl8yq3mUCSiwcxY3UvmVW8yjzKLBzFjzKPMqv5lHmUWDmLHmUbxVfzPejzKQcxY8yjzKr7xR5lAcxY8z3o3iq/mUeZQHMWC9HmVX8yjzKdg5iz5lJvzVfzPejzKLBzFjzPejzKr+Z70eZ70g5ix5lL5h/Gqwko8ynYOYs+ZSeZVfzKPMosHMWPM/GjdVfzPejzOlIOYsbxX5FftzNn9qjxyf9qz/wDSKCv1t8yvyP8A25Gz+1N44P8AtWf/AKRQVjU2Pcyh3rS9P1R+lP7P8n/Fifh3/wBi9Yf+k0dd95ledfAKT/ixnw9/7F6w/wDSeOu88yt47HhYiX76Xqy15lJ5lVvMpfMqjn5ix5lL5lVfMo8ygOYs+ZR5lV/M96PM96A5iz5lJ5lV99HmUBzFjzKXzOlVfMpfMoDmLHmUeZVbzKXzKA5ix5lHmVX8yjzKA5ix5lHmVX8z3pPMoDmLPmUeZVfzKTzKA5iz5lL5lVvMo8ygOYseZR5lV/Mo8ygOYseZR5lV/MpPM96A5iz5lL5lVfMpfMoDmLHme9HmVW3mjzKA5iz5lHmVW8yjzKA5iz5lHme9V/Mo8ygOYseZX5K/twc/tR+N/wDes/8A0igr9YvMr8m/2223ftQeNj/tWn/pHBWVTZH0GSu9eXp+qP0e+Akn/Fj/AIff9i/Y/wDpOld55leefAaT/ix/gAf9QCx/9J0ruvM4raOyPnMTL9/P1Za8zNHmVV8z3o8ymc/MWfMo8yq3mUeZQHMWfMo8yq3mfjR5lAcxZ8yjzKreZR5nvQHMWfMpfM96q+Z70eZQHMWvMpPMqt5lHmU7BzFnzKPMqt5lHmUg5iz5lHmVW8yjzPegOYs+Z70vmetVfM96XzPegOYs+ZSeZVbzKPMoDmLXmfnSeZVbzPejzKdg5iz5lL5nvVXzPejzKQcxZ8yjzKreZR5lAcxZ8yl8yqvme9HmUBzFnzKPM96reZR5lAcxa3mk8yq3mUeZQPmLPmV+Un7ay/8AGTnjT/etP/SOCv1S8z3r8rP20v8Ak5jxn/vWn/pHBWNbZH0WRSviJen6o/RH4FN/xZTwD/2AbH/0nSu48yvPvgbJt+C/gIf9QKy/9J0rt/MroivdR8ziZ/v5+r/Mt+ZSeZ71V8yjzPeqsc3OWvM96PMqr5lHmUWDnLfmUnmVV8z3o8yiwc5b8yk8yqvmUed70WDnLXmUeZVXzaPMosHOWvMo8yqvmUeZTsHOW/MpPMqr5nvR5lKwc5a8zrR5lVfM7UeYadg5y15nvS+ZVTzPwo8ylYOcteZR5nvVXzKPNosHOWvMo8yqvmUeZ70WDnLXme9HmVV8yjzKLBzlrzKXzKqeZR5lFg5y15lHmVV8yjzKLBzlrzKPMqr5lHmUWDnLXme9HmVV8yjzKLBzlvzK/LX9sw5/aU8Yn/atP/SOGv0/8yvy/wD2xGz+0f4wP+1a/wDpJDXJiPhR9RkEr4iX+H9UfoD8EZNvwZ8Cf9gOy/8ASdK7XzK4H4KSY+DvgYf9QOy/9EJXaeZXbBe4j5TFT/2ip6v8y15nvR5lVfM96PMq7HH7QteZR5lVPMpfMosHOWvMo8yqvmUnme/6UWDnLfmUeZVXzKPMosHOWvMo8yqm80eZRYOct+ZR5lVfM96PMosPnLXmUeZ71V8w/Sk8yiwvaFvzPejzKq+YaTzPf9KLBzlvzKPMqr51HmUrBzlrzPWjzPeqnmUeZTsPnLfmUeZVXzKTzKLB7Qt+ZR5lVfMo86iwucteZR5nvVXzKPM96LBzlrzKPMqr5nvR5nvRYPaFrzKPMqr5nvR5nvRYfOWvMo8yqnmUvmUWF7QteZ09K/Mb9sFv+MjfGH+9a/8ApJDX6X+ZX5mftetu/aK8XH/atf8A0lhrkxXwL1PreG5c2Jn/AIf1R96/BeTb8H/BH/YEs/8A0Qldn5vvXB/BuTb8I/Bf/YFs/wD0Sldj51dkF7iPjsbU/wBpq+r/ADLfmUebVTzaPN/GtLHF7Qt+ZR5mO9VPNpPO9TS5Q9oXPMo8z3qp51J51Fg9oXPNo8yqfnUvnUWD2hb8yjzPeqnnUedTsHtC35tHmVU873o873osHtC35nvR5lU/No86iwe0Lnm0eZVTzvejzqVh+0Lfm0eZVTzvejzqLC9oW/N96PMqp53vR5nvTsHtC35lHmVU86k86lYPaFzzKPMqp5lJ51Fg9oXPMo8yqfm/lR5tOw/aFzzKPMqp51J51Fhe0LnmUeZVTzaTzqVg9oXPMo8yqnnUebTsP2hb8yvzV/a4O79obxacd7X/ANJYa/R7zK/N/wDaybP7QPiv/etv/SWGuHFL3F6n2fC0ubFz/wAP6o+5fg/Jt+E/g0f9Qaz/APRKV1/ne9cN8JZdvwr8HDv/AGRaf+iUrq/O9DXo04+4j4LHVrYqr/if5l7zB60ed71S86jzqvlOH2xd86jzqped78Ued+NHKHtkXfOo87vmqTTe9HndMUcoe2LvnGjzvTmqPnUvne9HKHti753vR53vVLzqTzqOUPbF7zfXrR53WqPndM0pmPrRyh7YuedS+dVHzt1HnUcoe2L3nfjR51UfO680edRyh7YvedR51UvOpPOo5Q9sXvO96POql51HnUcoe2Lvne9Hne+TVLzqTzvejlD2xe86jzvyql53oaTzuvNHKHti953vQZveqPnUvnUcoe2LvndaPO/KqIm9aXzqOUPbF3zqBNzVLzvejzvWjlD2xdE3vzR51UvO9aPOo5Q9sXfOr86P2rPm+P3io/7Vt/6SxV+hPnV+en7UrBvjx4oPvbf+k0VcOMVoL1PveDqnNjai/u/qj7S+FFxt+F/hEemk2g/8hLXVef715/8ADG4Zfhv4WAOP+JXbD/yEtdP9objmvWpU/wB3E/K8yxnLjqy/vS/Nmz5/vSfasn2rI+1s3Xp35pPtT9c1r7M8z66bH2ml+0j1xWP9qbt+FJ9qbp0FL2YfXDY+0D8KPtPvWR9qb1pPtTc8/rT9mH1xGz9o/Kk+08cnFY/2pu5o+1Ovf86PZh9cNj7QO/IpftArH+1N+lJ9qf14o9mH1w2ftPSk+0+9ZH2p/Wk+1NS9mP64bH2od6X7SPXNY/2xqPtLevNHsxfXDY+0D1o+0e9Y32o/jSi6bpn8afsw+uGx9qH9aPtA9axvtTUfaW55o9mH1w2ftBpDcjisf7S3HNH2pu3BpezD64bP2qk+0/LWP9qYY5pftTfU+tP2YfXDY8/3o+0Dpmsb7U350LcN/k0ezD64bIuO+aPtBrG+1NQLlgc55o9mH1w2ftA9aT7R+VY/2pu/PFH2p9vWl7MPrhs/avfFJ9orH+1N2Pej7U3B7U/Zh9cNj7T70v2gfSsf7U2c5pPtTbuvNHsw+uGz9oNfAH7TjGT45eJ29Wt//SeKvub7U1fDH7R5LfGjxGT1zb/+k8VeRmUeWkvU/S+AsR7XMKq/ufrE+uvhm3/Fu/C//YMt/wD0UtdLu6Vy3wzb/i3Xhf8A7Blv/wCilrpd3TvXsUX+7j6H5rmi/wBvr/4pfmx+6jdUe6jdWlzyuUk3Ubqj3UbqLhykm6jdUe6jdRcOUk3Ubqj3UbqLhykm6l3VHu96Td70XCxJuo3VHuo3U7hykm6jdUe6jdSuHKSbqN1M3e9JuouFiTdRu96j3UbqLhykm6jdUe6jdRcOUk3Ubqj3UbqLhykm6jdUe6jdRcOUl8w+tJk0zd70m6gOUl3Um6o91G6i4cpJuo3VHuo3UXDlJN1G6o91G6i4cpLu4NfDv7RX/JZfEX1g/wDSeOvt7d1r4f8A2iv+SyeIvrB/6Tx15Gafwl6/oz9U8PP+RjV/wf8At0T64+Grf8W78Mf9g23/APRa10gauX+Gv/JO/DH/AGDLf/0WtdJu9676P8OPofCZmv8Abq/+KX5sk3Ubqj3e9Fanl2JN1G6o93vRu96AsSbqN1R0bvegLEm6jdUe73o3daAsSbqN1R0bvwoCw/dS7qj3e9G73oCxJuo3VHu96KAsSbqN1R7vejd70BYk3Ubqj3e9FAWH7qXdUe7vRQFiTdRuqPd70bu1AWH7qXdUdG73oCw/dS7qj3e9FAWJN1G6o93vRu96AsSbqN1R7vejd70BYk3Ubqj3CigLEm6viL9oj/ksfiH6wf8ApPHX21nqa+JP2hc/8Lh8Q/70H/oiOvIzT+EvX/M/UvD7/kY1f8H/ALdE+tPhu3/FvfDP/YMt/wD0WtdGG5rmPhw2Ph74Z/7Btv8A+i1roQ1d9L+HH0PhsyX+3V/8UvzZLuo3VHu96N3vWp5nKS7qTdUe7pQrUBykm6jdUe/pRu96A5STdRuqPd70bvegOUk3Ubqj3e9G73oDlJN1G6o93vSbqA5SXd60bqj3e9G7pQHKSbqN1R7vejd70Bykm6jdUe73o8ygOUk3Ubqj3e9HmUBykm6jdUe73o3fhQHKSbqXdUW73pN1AcpLuo3VFuo3UByku6jdUe73o3e9AcpJuo3VHu+Wjd70Bykm6jdUe73o3e9AcpLu4NfE37Qn/JYPEP8AvQ/+iI6+1N9fFX7QX/JXvEH1g/8AREdeTmX8Jev6H6fwB/yMav8Ag/8Abon1f8Om/wCLf+Gv+wbb/wDota6LdXNfDtv+KB8Nf9g63/8ARa10W7pzXfSf7tHxGZL/AG2t/il+bH7qN1R0bvetbnm2JN1G6o93vS7v9qi4rD91G6mbqSi4WJN1G6o6XdRcLD91JuplLuouFh+6jdUe73oouOxJuo3VHRu96LhYk3Ubqjpd1FxWH7qN1R7vel3UXCw/dRuqPd70u6i4WH7qN1R0ZzRcLEm6k3Uyii47Em6jdUe73oouFiTdRuqPd70u6i4rD91G6o93vRu96LhYk3UbqjoouFiTdXxh+0B/yV3X/rB/6Ijr7M3c9a+Mvj9/yVzX/rD/AOiI68vMP4a9f8z9O4C/5GFX/B/7dE+qPh2f+KB8N/8AYOt//Ra10W7pXNfDtv8AigPDf/YOt/8A0WtdDurrpv3EfE5kv9trf4pfmx+73opm6jdWtzzLD6N3vTMijdRcLD6N3vTN1G6i4WH7veio91LuouHKP3e9FM3Umfei4cpJu96KZupN1Fw5STd70bvembqN1FwsP3e9G73pm6jdRcLD93vRu7UzdRuouFh9FR7qXdRcfKP3e9FM3UbqLisP3e9G73pm6jdRcLD93vRu96ZkUbqLhYfu96N3vUe6l3UXDlH0bvembqN1FwsP3CjcKj3Uu6i4co/dzXxr8fP+Sta99YP/AERHX2Pu5r43+PX/ACVrXv8Aeh/9ER15uO+Bep+l8Br/AIUKv+D/ANuifUnw8b/igvDn/YOt/wD0WtdDu9q8/wDAfj7w1b+CdBil17TY5Y7CBHR7pFZGCKCpBbgg1uf8LD8L8/8AFRaV/wCBsf8A8VW1OrDkWp83mGXYyWMqyjSlbmfR9zo9x9aXdXN/8LE8Lf8AQx6X/wCBsf8A8VSf8LE8Lf8AQxaV/wCBsf8A8VWvtYdzz/7Mxn/PmX/gL/yOlyaTJrnP+FheF/8AoYtK/wDA2P8A+Ko/4WJ4W/6GLSv/AAMj/wDiqPaw7h/ZmM/58y/8BZ0e4+tG4+tc5/wsTwr/ANDFpX/gZH/8VR/wsTwt/wBDFpf/AIGx/wDxVHtYdxf2ZjP+fMv/AAF/5HSbjRuNc1/wsTwt/wBDFpX/AIGx/wDxVL/wsTwr/wBDFpX/AIGR/wDxVHtYdw/szGf8+Zf+Av8AyOk3Gk3H1rm/+FieF/8AoYtK/wDA2P8A+Kpf+FieFv8AoYtL/wDA2P8A+Ko9rDuH9mYz/nzL/wABf+R0e4+tLurm/wDhYnhX/oYtK/8AAyP/AOKo/wCFieFf+hi0r/wMj/8AiqPaw7h/ZmM/58y/8Bf+R0m40bjXN/8ACxPC3/QxaX/4Gx//ABVH/CxPC3/QxaX/AOBsf/xVHtYdw/szGf8APmX/AIC/8jpNxo3Gub/4WJ4W/wChi0v/AMDY/wD4qj/hYnhb/oYtL/8AA2P/AOKo9rDuH9mYz/nzL/wF/wCR0m40m4+tc5/wsTwr/wBDFpX/AIGR/wDxVH/CxPC3/QxaX/4Gx/8AxVHtYdw/szGf8+Zf+Av/ACOjyaMmuc/4WJ4W/wChi0v/AMDY/wD4qk/4WJ4X/wChj0r/AMDI/wD4qj2sO4f2ZjP+fMv/AAF/5HS7jRuNc1/wsTwv/wBDHpX/AIGR/wDxVL/wsTwt/wBDHpf/AIGx/wDxVHtYdw/szGf8+Zf+Av8AyOk3Gjca5r/hYnhb/oYtK/8AAyP/AOKpf+FieFv+hi0v/wADY/8A4qj2sO4f2ZjP+fMv/AX/AJHSbqN1c3/wsTwt/wBDFpf/AIGx/wDxVH/CxPC3/QyaX/4GR/8AxVHtYdw/szGf8+Zf+Av/ACOk3GjdXNf8LE8Lf9DFpX/gZH/8VR/wsTwt/wBDFpX/AIGR/wDxVHtYdw/szGf8+Zf+Av8AyOl3Gjca5r/hYnhb/oYtK/8AA2P/AOKpf+FieFv+hi0v/wADY/8A4qj2sO4f2ZjP+fMv/AX/AJHSbjRuNc3/AMLE8Lf9DFpf/gbH/wDFUf8ACxPC3/Qx6X/4Gx//ABVHtYdw/szGf8+Zf+Av/I6Tmvjr48f8lY17jvD/AOiI6+of+FieFz08RaX/AOBsf/xVfKXxr1i01L4na1cWVzDd2zmHbNDIGVsQoDgg88gj8K4MZJTguV9T9E4KweIoY2pKrBxXL1TXVH//2Q==';  // Update the path as needed
+            pdf.addImage(imgData2, 'JPEG', -1, 0, 240, 500); // Change coordinates and dimensions as needed
+
+            // Add image to PDF
+            const imgData = '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';  // Update the path as needed
+            // Define inline styles for the image
+            const imgWidth = 40;
+            const imgHeight = 38;
+            const xCoord = 84;
+            const yCoord = 50;
+            const borderRadius = 10;
+
+            // Draw the rounded rectangle as a border
+            pdf.setFillColor(255, 255, 255); // Set border color
+            pdf.roundedRect(xCoord - 77, yCoord - 5, imgWidth + 156, imgHeight + 35, borderRadius, borderRadius, 'F');
+
+            // Add the image on top of the border
+            pdf.addImage(imgData, 'JPEG', xCoord, yCoord, imgWidth, imgHeight);
+
+
+
+            const tableHeaders = Object.keys(employee).map(key => ({
+                header: key,
+                dataKey: key,
+            }));
+
+            const styles = {
+                lineColor: [0, 0, 0],    // Black grid lines
+                lineWidth: 0.5,          // Line width of the grid
+                overflow: 'linebreak',
+                fontSize: 9,
+                valign: 'middle',
+                halign: 'center',
+            };
+
+            pdf.autoTable({
+                columns: tableHeaders,
+                body: [employee],
+                startY: 86,  // Adjust starting y-coordinate for the table
+                theme: 'grid',
+                styles: styles,
+                columnStyles: {
+                    0: {
+                        fontStyle: 'bold',
+                        textColor: [255, 0, 0],
+                    },
+                    1: {
+                        fontStyle: 'bold',
+                        textColor: [255, 0, 0],
+                    },
+                    2: {
+                        textColor: [255, 0, 0],
+                    },
+                    3: {
+                        textColor: [255, 0, 0],
+                    },
+                    4: {
+                        textColor: [255, 0, 0],
+                    },
+                    5: {
+                        textColor: [255, 0, 0],
+                    },
+                    6: {
+                        columnWidth: 10,
+                        textColor: [255, 0, 0],
+                    },
+                    7: {
+                        columnWidth: 10,
+                        textColor: [255, 0, 0],
+                    },
+                    8: {
+                        textColor: [255, 0, 0],
+                    },
+                    9: {
+                        textColor: [255, 0, 0],
+                    },
+                    10: {
+                        columnWidth: 10,
+                        textColor: [255, 0, 0],
+                    },
+                },
+
+            });
+            // Add footer
+            const pageCount = pdf.internal.getNumberOfPages();
+            for (let i = 1; i <= pageCount; i++) {
+                pdf.setPage(i);
+                pdf.setFont('helvetica', 'bold');
+                pdf.setFontSize(10);
+                pdf.setTextColor(255,255,255);
+                pdf.text('@ 2023 Baud Telecom Company (BTC). All rights reserved.', pdf.internal.pageSize.getWidth() / 2, pdf.internal.pageSize.getHeight() - 10, { align: 'center' });
+            }
+
+            const pdfBlob = pdf.output('blob');
+            const pdfUrl = URL.createObjectURL(pdfBlob);
+
+            const embedPdf = document.createElement('embed');
+            embedPdf.src = pdfUrl;
+            embedPdf.width = '100%';
+            embedPdf.height = '600';
+
+            document.getElementById('pdfContainer').innerHTML = '';
+            document.getElementById('pdfContainer').appendChild(embedPdf);
+        }
+
+        let base64StringBackground = "";
+let base64StringBTC = "";
+
+function convertImageToBase64(imagePath, callback) {
+    let img = new Image();
+    img.crossOrigin = "anonymous";
+    img.onload = function () {
+        let canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        let ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        let base64 = canvas.toDataURL("image/png"); // You can change the format if needed
+        callback(base64);
+    };
+    img.src = imagePath;
+}
+
+function convertImages() {
+    convertImageToBase64("images/background.jpg", function (base64Background) {
+        base64StringBackground = base64Background;
+        console.log("Background image converted to base64:");
+        console.log(base64StringBackground);
+        
+        convertImageToBase64("images/BTC.jpg", function (base64BTC) {
+            base64StringBTC = base64BTC;
+            console.log("BTC image converted to base64:");
+            console.log(base64StringBTC);
+        });
+    });
+}
+
+convertImages(); // Call the function to start the conversion
+
+
+        populateEmployeeIDs();
+    </script>
+</body>
+
+</html>

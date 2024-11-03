@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <!-- Include Chart.js library -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.2/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="header1 ">
+    <h2 class="fas">Dashboard</h2>
+    <span>
+      <img src="images/dashboard-icon.png">
+    </span>
+    <div class="input-group">
+      <input type="search" class="input-group-input" id="search-input" placeholder="Search Graphs...">
+      <img src="images/search.png">
+    </div>
+    <div class="export__file">
+      <label for="export-file" class="export__file-btn" title="Export File"></label>
+      <input type="checkbox" id="export-file">
+      <div class="export__file-options">
+        <label>Export As &nbsp; &#10140;</label>
+        <label for="export-file" id="toPDF">PDF <img src="images/pdf.svg"></label>
+        <!--<label for="export-file" id="toEXCEL">EXCEL <img src="images/excel.png" alt=""></label>-->
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="dashboard" id="dashboard">
+      <ul>
+        <li><a href="#" class="fas"><i class="fas fa-home"></i>&nbsp;&nbsp;&nbsp;&nbsp;Home</a></li>
+        <li><a href="../index.html" class="fas"><i class="fas fa-users"></i>&nbsp;&nbsp;&nbsp;&nbsp;Employees</a></li>
+        <li><a href="#" class="fas"><i class="fas fa-chart-bar"></i>&nbsp;&nbsp;&nbsp;&nbsp;Dashboard</a></li>
+        <li><a href="#" class="fas"><i class="fas fa-cog"></i>&nbsp;&nbsp;&nbsp;&nbsp;Settings</a></li>
+      </ul>
+    </div>
+    <div class="main-content" id="main-content">
+      <main class="table">
+        <div class="header">
+          <h3 class="fas">Welcome Admin</h3>
+          <span class="fas" id="currentDate"></span>
+        </div>
+        <div class="chart-container-wrapper">
+          <div class="fas total chart-container flex2">
+            <div class="fas fa-users"></div>
+            <h3 class="fas"><br>Total Employees<br><br><span class="fas" style="font-size: 30px;" id="total"></span></h3>
+          </div>
+          <div class="fas salary chart-container flex2">
+            <div class="fas fa-money-bill-wave"></div>
+            <div style="display:none;"> salary</div>
+            <h3 class="fas"><br>Average Salaries<br><br><span class="fas" style="font-size: 30px;" id="salary"></span>
+            </h3>
+          </div>
+          <div class="fas manager chart-container flex2">
+            <div class="fas fa-users-cog"></div>
+            <h3 class="fas"><br>Total Managers<br><br><span class="fas" style="font-size: 30px;" id="manager"></span>
+            </h3>
+          </div>
+          <div class="chart-container flex">
+            <div style="display:none;"> departments donut doughnut chart</div>
+            <p class="fas">Employees per Department</p>
+            <canvas id="departmentChart"></canvas>
+          </div>
+          <div class="chart-container flex4">
+            <div style="display:none;"> average salary performance attendance employee satisfaction rate rating in
+              thousands bar chart</div>
+            <p class="fas">Metrics of Workplace Success</p>
+            <canvas id="departmentBarChart"></canvas>
+          </div>
+          <div class="chart-container flex3">
+            <div style="display:none;"> employees managers number count polar area chart</div>
+            <p class="fas">Number of Employees Under Managers</p>
+            <canvas id="employeeCount"></canvas>
+          </div>
+          <div class="chart-container flex4">
+            <div style="display:none;"> attendance bar chart</div>
+            <p class="fas">Monthly Attendance Tracker</p>
+            <canvas id="attendanceChart"></canvas>
+          </div>
+          <div class="chart-container flex3">
+            <div style="display:none;"> cost of hiring pie chart</div>
+            <p class="fas">Monthly Hiring Costs</p>
+            <select id="monthSelector">
+              <option value="January">January</option>
+              <option value="February">February</option>
+              <option value="March">March</option>
+              <option value="April">April</option>
+              <option value="May">May</option>
+              <option value="June">June</option>
+              <option value="July">July</option>
+              <option value="August">August</option>
+              <option value="September">September</option>
+              <option value="October">October</option>
+              <option value="November">November</option>
+              <option value="December">December</option>
+            </select>
+            <canvas id="costOfHiringChart"></canvas>
+          </div>
+          <div class="chart-container flex4">
+            <div style="display:none;"> salary stats statistics year 1 2 3 year1 year2 year 3 line chart</div>
+            <p class="fas">Yearly Salary Statistics</p>
+            <canvas id="salaryStatisticsChart"></canvas>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+  <div class="footer">
+    <p>&copy; 2024 Kawarsim. All rights reserved.</p>
+  </div>
+  <script src="script.js"></script>
+</body>
+
+</html>
